@@ -25,5 +25,5 @@ Este proyecto implementa pruebas automatizadas para la página [Automation Exerc
 
 📖 Autor
 Agustin
-🚀 Automatización de pruebas con Selenium & Cucumbe
+🚀 Automatización de pruebas con Selenium & Cucumber
 
