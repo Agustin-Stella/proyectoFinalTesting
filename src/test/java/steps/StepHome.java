@@ -16,21 +16,22 @@ public class StepHome {
 
 @Given("El usuario abre la pagina principal")
     public void ElUsuarioAbreLaPaginaPrincipal(){
-    driver = new ChromeDriver();
-    driver.get("https://automationexercise.com/");
+    driver = Hooks.driver;
+    driver.get("https://automationexercise.com");
     driver.manage().window().maximize();
     }
 
-@Then("La url debe ser {string}")
 
-    public void laUrlDebeSer(String expectedUrl){
-    String actualUrl = driver.getCurrentUrl();
+    @Then("La url debe ser {string}")
+    public void laUrlDebeSer(String urlEsperada) {
+        String urlActual = driver.getCurrentUrl();
 
-    System.out.println("URL Actual: " + actualUrl);
-    System.out.println("URL Esperada: " + expectedUrl);
 
-    Assert.assertEquals(expectedUrl, actualUrl);
-}
+        String actual = urlActual.endsWith("/") ? urlActual.substring(0, urlActual.length() - 1) : urlActual;
+        String esperada = urlEsperada.endsWith("/") ? urlEsperada.substring(0, urlEsperada.length() - 1) : urlEsperada;
+
+        Assert.assertEquals(esperada, actual);
+    }
 
 
 @And("El usuario cierra la pagina")

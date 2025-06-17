@@ -1,6 +1,7 @@
 package steps;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,15 +9,17 @@ import io.cucumber.java.en.Given;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.time.Duration;
 
 public class stepCrearCuenta {
     private WebDriver driver;
 
+
     @Given("El usuario esta en la pagina de registro")
     public void elUsuarioEstaEnLaPaginaDeRegistro(){
-        driver = new ChromeDriver();
+        driver = Hooks.driver;
         driver.get("https://automationexercise.com/login");
         driver.manage().window().maximize();
 
@@ -28,8 +31,9 @@ public class stepCrearCuenta {
         WebElement nombre = driver.findElement(By.xpath("//input[@name='name']"));
         nombre.sendKeys("Agustin");
 
+
         WebElement gmail = driver.findElement(By.xpath("//div[@class='signup-form']//input[@name='email']"));
-        gmail.sendKeys("agustin78827@gmail.com");
+        gmail.sendKeys("agustin6377@gmail.com");
 
         WebElement signUp= driver.findElement(By.xpath("//button[.='Signup']"));
         signUp.click();
@@ -42,11 +46,12 @@ public class stepCrearCuenta {
         WebElement title = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Mr']")));
         title.click();
 
-        WebElement password = driver.findElement(By.xpath("//input[@id='password']"));
+        WebElement password = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
         password.sendKeys("agustin12345Ag");
 
 
-        WebElement dia = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@id='days']")));
+
+    WebElement dia = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@id='days']")));
         Select seleccionarDia = new Select(dia);
         seleccionarDia.selectByVisibleText("11");
 
@@ -89,12 +94,18 @@ public class stepCrearCuenta {
 
 }
 
-@And("Click en create Acount")
+@And("Click en create Acount y verifica si se creo correctamente")
 
-public void cliclEnCreateAcount(){
+public void cliclEnCreateAcountYVerificaSiSeCreoCorrectamente(){
         WebElement createAcount = driver.findElement(By.xpath("//button[.='Create Account']"));
         createAcount.click();
 
+
+        try {WebElement verificar = driver.findElement(By.xpath("//*[@id=\'form\']/div/div/div"));
+        Assert.assertTrue(verificar.isDisplayed(), "La cuenta no se creo correctamente");
+    } catch (NoSuchElementException e) {
+        Assert.fail("Error al encontrar el div");
+    }
 
 }
 
